@@ -7,7 +7,7 @@
 Este proyecto es una aplicación que calcula el total a pagar de una empresa a un empleado (pago de nómina). Este pago corresponde a la diferencia entre los valores devengados y las deducciones de ley que aplican al salario del trabajador.
 ## ¿Cómo lo hago funcionar?
 ### Prerrequisito
-Asegurese de tener ``Python`` instalado en su sistema. Ademas de tambien añadir `unittest` que es el encargado de correr las pruebas unitarias.<br>
+Asegurese de tener ``Python`` instalado en su sistema. Ademas de tambien añadir `unittest` que es el encargado de correr las pruebas unitarias, asi como tambien `kivy`que es el encargado de procesar la interfaz de usuario.<br>
 De resto no hay otro prerrequisito.
 ### Ejecución
 Para correr el programa por fuera del entorno de desarrollo :
