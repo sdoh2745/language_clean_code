@@ -15,10 +15,15 @@ Para correr el programa por fuera del entorno de desarrollo :
    ```bash
    cd C:\Users\Usuario\OneDrive\Documentos\U\Sexto Semestre\Código limpio\Clean-Code-1
    ``` 
-2. Ejecuta el script principal: <br>
+2. A continuación puedes ejecutar la consola para comprobar el funcionamiento, esto mediante las siguinetes lineas: <br>
    ```bash
    src\Console\Console.py
    python src\Console\Console.py
+   ```
+3. Tambien puedes ejecutar el script principal donde se encuntra la interfaz, la cual es mas amigable con el usuario: <br>
+   ```bash
+   src\GUI\Nomina_GUI.py
+   python src\GUI\Nomina_GUI.py
    ```
 
 ## ¿Cómo está hecho?
