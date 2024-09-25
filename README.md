@@ -31,20 +31,28 @@ Para correr el programa por fuera del entorno de desarrollo :
 El proyecto está organizado en dos carpetas principales:
 - **src**: Contiene el código fuente de la aplicación.
    - **Console**: Contiene el script `Console.py` para la interacción del usuario.
-   - **GUI**: Contiene el script principal `Nomina_GUI.py` que desde una interfaz amihable con el ususario puede interactuar con el programa.
+   - **GUI**: Contiene el script principal `Nomina_GUI.py` que desde una interfaz amigable con el ususario puede interactuar con el programa.
    - **Recursos**: Contiene una imagen que se usa como recurso para hacer la interfaz mas amigable `precaution.png` 
    - **LiquidacionNomina**: Contiene la lógica para el cálculo de la nómina (`Liquida_nomina.py`) y las validaciones necesarias para asegurar que las variables cumplan los estándares (`Validations.py`).
   
 - **Test**: Contiene pruebas unitarias para validar la funcionalidad del código.
 ### Organización del módulo
-- `src\Console\Console.py`: archivo principal para la interacción del usuario. Recopila las entradas del usuario y muestra los resultados.
+- `src\GUI\Nomina_GUI.py`: Contiene el script principal, el cual recopila las entradas del usuario mediante una interfaz y muestra los resultados por medio de la misma.
+- `src\Console\Console.py`: Contiene el script para la interacción del usuario de manera plana. Recopilando las entradas del usuario y muestra los resultados.
 - `src\LiquidacionNomina\Liquida_nomina.py`: contiene las funciones lógicas para el cálculo de la nomina, incluida la validación de las entradas y el cálculo del pago.
 ### Dependencias
 - `unittest`: biblioteca estándar de Python para pruebas unitarias.
+- `kivy`: biblioteca Python para el desarrollo de interfaces gráficas.
 ## Uso
 Para ejecutar las pruebas unitarias desde la carpeta `test`, utilice el siguiente comando:
 ```bash
 python Test/Test_liquidacion.py
-Para ejecutar el archivo principal:
+```
+Para ejecutar la interfaz gráfica amigable con el usuario y comprobar el funcionamiento, utilice el siguiente comando:
+```bash
 python src\GUI\Nomina_GUI.py
+```
+Para ejecutar la consola y probar el funcionamiento del programa, utilice el siguiente comando:
+```bash
+python src\Console\Console.py
 ```
