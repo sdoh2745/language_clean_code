@@ -30,13 +30,13 @@ El proyecto está organizado en dos carpetas principales:
 - **Test**: Contiene pruebas unitarias para validar la funcionalidad del código.
 ### Organización del módulo
 - `src\Console\Console.py`: archivo principal para la interacción del usuario. Recopila las entradas del usuario y muestra los resultados.
-- `src\LiquidacionNomina\Liquida_nomina1.py`: contiene las funciones lógicas para el cálculo de la nomina, incluida la validación de las entradas y el cálculo del pago.
+- `src\LiquidacionNomina\Liquida_nomina.py`: contiene las funciones lógicas para el cálculo de la nomina, incluida la validación de las entradas y el cálculo del pago.
 ### Dependencias
 - `unittest`: biblioteca estándar de Python para pruebas unitarias.
 ## Uso
 Para ejecutar las pruebas unitarias desde la carpeta `test`, utilice el siguiente comando:
 ```bash
-python Test/Liqui_test.py
+python Test/Test_liquidacion.py
 Para ejecutar el archivo principal:
 python src\Console\Console.py
 ```
