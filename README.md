@@ -30,8 +30,11 @@ Para correr el programa por fuera del entorno de desarrollo :
 ### Arquitectura del proyecto
 El proyecto está organizado en dos carpetas principales:
 - **src**: Contiene el código fuente de la aplicación.
-   - **Console**: Contiene el script principal `Console.py` para la interacción del usuario.
-   - **LiquidacionNomina**: Contiene la lógica para el cálculo de la nómina (`Liquida_nomina1.py`).
+   - **Console**: Contiene el script `Console.py` para la interacción del usuario.
+   - **GUI**: Contiene el script principal `Nomina_GUI.py` que desde una interfaz amihable con el ususario puede interactuar con el programa.
+   - **Recursos**: Contiene una imagen que se usa como recurso para hacer la interfaz mas amigable `precaution.png` 
+   - **LiquidacionNomina**: Contiene la lógica para el cálculo de la nómina (`Liquida_nomina.py`) y las validaciones necesarias para asegurar que las variables cumplan los estándares (`Validations.py`).
+  
 - **Test**: Contiene pruebas unitarias para validar la funcionalidad del código.
 ### Organización del módulo
 - `src\Console\Console.py`: archivo principal para la interacción del usuario. Recopila las entradas del usuario y muestra los resultados.
@@ -43,5 +46,5 @@ Para ejecutar las pruebas unitarias desde la carpeta `test`, utilice el siguient
 ```bash
 python Test/Test_liquidacion.py
 Para ejecutar el archivo principal:
-python src\Console\Console.py
+python src\GUI\Nomina_GUI.py
 ```
