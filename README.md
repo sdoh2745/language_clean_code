@@ -41,8 +41,8 @@ El proyecto está organizado en dos carpetas principales:
 - `src\Console\Console.py`: Contiene el script para la interacción del usuario de manera plana. Recopilando las entradas del usuario y muestra los resultados.
 - `src\LiquidacionNomina\Liquida_nomina.py`: contiene las funciones lógicas para el cálculo de la nomina, incluida la validación de las entradas y el cálculo del pago.
 ### Dependencias
-- `unittest`: biblioteca estándar de Python para pruebas unitarias.
-- `kivy`: biblioteca Python para el desarrollo de interfaces gráficas.
+- `unittest`: Librería estándar de Python para pruebas unitarias.
+- `kivy`: Librería de Python para el desarrollo de interfaces gráficas.
 ## Uso
 Para ejecutar las pruebas unitarias desde la carpeta `test`, utilice el siguiente comando:
 ```bash
