@@ -20,7 +20,7 @@ Para correr el programa por fuera del entorno de desarrollo :
    src\Console\Console.py
    python src\Console\Console.py
    ```
-3. Tambien puedes ejecutar el script principal donde se encuntra la interfaz, la cual es mas amigable con el usuario: <br>
+3. Tambien puedes ejecutar el script principal donde se encuentra la interfaz, la cual es mas amigable con el usuario: <br>
    ```bash
    src\GUI\Nomina_GUI.py
    python src\GUI\Nomina_GUI.py
