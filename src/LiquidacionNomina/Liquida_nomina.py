@@ -17,8 +17,19 @@ class Liquidacion():
             'leave_days': [leave_days, True],
             'sick_days': [sick_days, True]
         }
-        
+    
+    def Validar_salario(self):
+        if self.variables['monthly_salary'][0] < 2000:
+            raise Validations.ZeroSalary("VALOR INVÁLIDO: Asegúrese de que el valor en salario sea su salario mensual (número mayor de cero '0').")
 
+    def Validar_semanas_trabajadas(self):
+        if self.variables['weeks_worked'][0] == 0:
+            raise Validations.ZeroWeeksWorked("VALOR INVÁLIDO: Las semanas trabajadas deben ser un número mayor o igual a 1.")
+
+    def Validar_time_worked_on_holidays(self):
+        if self.variables['time_worked_on_holidays'][0] > 8:
+            raise Validations.MoreThan8HoursWorkedOnHoliday("VALOR INVÁLIDO: El tiempo festivo laborado no puede ser mayor a 8 horas.")
+    
     def CalcularLiquidacion(self):
         """
         Calculates the payroll settlement for employees in Colombia.
@@ -41,16 +52,10 @@ class Liquidacion():
         SALARY_TO_DEDUCT_FOR_WITHHOLDING = 4300000
         PERCENTAGE_TO_DEDUCT_FOR_DISABILITY = 0.333
 
-        if self.variables['monthly_salary'][0] < 2000:
-            raise Validations.ZeroSalary("VALOR INVÁLIDO: Asegurese de que el valor en salario sea su salario mensual (número mayor de cero '0').")
-        
-        if self.variables['weeks_worked'][0]== 0:
-            raise Validations.ZeroWeeksWorked("VALOR INVÁLIDO:Las semanas trabajadas deben ser un número mayor o igual a 1.")
-        
-        
-        if self.variables['time_worked_on_holidays'][0] > DAILY_WORKING_HOURS:
-            raise Validations.MoreThan8HoursWorkedOnHoliday("VALOR INVÁLIDO: El timepo festivo laborado no piede ser mayor a 8 horas.")
-        
+        self.Validar_salario()
+        self.Validar_semanas_trabajadas()
+        self.Validar_time_worked_on_holidays()
+
         days_worked = self.variables['weeks_worked'][0] * TOTAL_WORK_DAYS_PER_WEEK  # Convert weeks to days worked
 
         # Initial calculations
@@ -94,6 +99,7 @@ class Liquidacion():
             'Retención de fuente': withholding_tax,
             'Deduccion por incapacidad': disability_deduction
         }
-    
+
         return (round(total_settlement, 2),detalles)
+    
 
