@@ -7,7 +7,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 import sys
 sys.path.append("src")
-from LiquidacionNomina.Liquida_nomina import Liquidacion
+from LiquidacionNomina.Liquida_nomina import *
 from LiquidacionNomina.Validations import *
 
 class NominaCalculatorApp(App):
@@ -22,9 +22,11 @@ class NominaCalculatorApp(App):
             self.rect = Rectangle(size=contenedor.size, pos=contenedor.pos)
 
         contenedor.bind(size=self._update_rect, pos=self._update_rect)
-        
+
+        self.detalles = {}
+
         contenedor.add_widget(Label(text= "NominaCalculator APP", color=(0, 0, 0, 1), bold=True))
-        contenedor.add_widget(Label(text="NOTA: Si deja un campo vacío, automáticamente se le asignará cero 0 ", color=(0, 0, 0, 1),font_size='12sp'))
+        contenedor.add_widget(Label(text="NOTA: Si deja un campo vacío, automáticamente se le asignará cero 0 ", color=(0, 0, 0, 1),font_size='14sp'))
 
         contenedor.add_widget(Label(text='Salario Mensual:', color=(0, 0, 0, 1)))
         self.salary_input = TextInput(multiline=False)
@@ -60,22 +62,29 @@ class NominaCalculatorApp(App):
 
         contenedor.add_widget(Label(text=""))
 
-        self.result_label = Label(text='', color=(0, 0, 0, 1), bold=True) 
+        self.result_label = Label(text='', color=(0, 0, 0, 1), bold=True,font_size='17sp') 
         contenedor.add_widget(self.result_label)
 
         # Botón personalizado
-        calculate_button = Button(text='Calcular Nómina', size_hint=(None, None), size=(170, 80),
-                                  background_color=(0.2, 0.6, 0.7, 1), color=(1, 1, 1, 1), bold=True)
+        calculate_button = Button(text='Calcular Nómina', size_hint=(8, None), size=(100, 70),
+                                  background_color=(0.2, 0.6, 0.7, 1), color=(1, 1, 1, 1), bold=True,font_size='25sp')
         calculate_button.bind(on_press=self.calculate_nomi)
         centro_layout = BoxLayout(orientation='horizontal', size_hint=(1, None), height=100)
         centro_layout.add_widget(Label(size_hint_x=0.5)) 
         centro_layout.add_widget(calculate_button)
         centro_layout.add_widget(Label(size_hint_x=0.5)) 
+
+        details_button = Button(text='Ver Detalles', size_hint=(3, None), size=(60, 70),
+                                background_color=(0.2, 0.6, 0.7, 1), color=(1, 1, 1, 1), bold=True, font_size='15sp')
+        details_button.bind(on_press=self.obtener_detalles)
+        centro_layout.add_widget(details_button)
+
+        clear_button = Button(text='Limpiar', size_hint=(3,None), size=(20, 70), background_color=(0.2, 0.6, 0.7, 1), color=(1, 1, 1, 1), bold=True)
+        clear_button.bind(on_press=self.clear_labels)
+        centro_layout.add_widget(clear_button)
         
         contenedor.add_widget(centro_layout)
-
-        contenedor.add_widget(Label(text=""))
-
+    
         return contenedor
 
     def _update_rect(self, instance, value):
@@ -93,16 +102,16 @@ class NominaCalculatorApp(App):
             leave_days = (self.leave_days_input.text) if self.leave_days_input.text else 0
             sick_days = (self.sick_day_input.text) if self.sick_day_input.text else 0
             
-            # Crear la instancia y calcular
-            result = Liquidacion(  monthly_salary=monthly_salary, weeks_worked=weeks_worked, time_worked_on_holidays=time_worked_on_holidays,
-                                  overtime_day_hours=overtime_day_hours, overtime_night_hours=overtime_night_hours, 
-                                overtime_holiday_hours=overtime_holiday_hours, leave_days=leave_days, sick_days=sick_days)
-            
-            total_payment = result.CalcularLiquidacion()
-            self.result_label.text = f'Total Liquidación de Nomina: ${total_payment}'
+            liquidacion = Liquidacion(monthly_salary, weeks_worked, time_worked_on_holidays,
+                                   overtime_day_hours, overtime_night_hours,
+                                   overtime_holiday_hours, leave_days, sick_days)
+
+            # Calcular liquidación
+            total_payment, self.detalles = liquidacion.CalcularLiquidacion()
+            self.result_label.text = f"Total Liquidación de Nomina: ${total_payment:,}".replace(',', '.')
 
         except (NegativeValue, InvalidValue, MoreThan8HoursWorkedOnHoliday, 
-                NotAnIntegerValue, CommaSeparator, ZeroWeeksWorked) as error:
+                NotAnIntegerValue, CommaSeparator, ZeroWeeksWorked, ZeroSalary) as error:
             self.mostrar_error(str(error))
 
         except ValueError :
@@ -112,21 +121,65 @@ class NominaCalculatorApp(App):
     def mostrar_error(self, mensaje_error):
         contenedor1 = BoxLayout(orientation='vertical')
 
-        # Añadir la imagen
-        imagen = Image(source='src\Recursos\precaution.png', size_hint=(1, 2))  # Ajusta el tamaño según necesites
-        contenedor1.add_widget(imagen)
+        mensaje = Label(text=mensaje_error, color=(1, 1, 1, 1), halign="center", valign="middle")
+        mensaje.text_size = (500, None) 
+        mensaje.bind(size=mensaje.setter('text_size'))  # Ajusta el tamaño del texto automáticamente
 
-        mensaje = Label(text=mensaje_error, color=(1, 1, 1, 1))
         contenedor1.add_widget(mensaje)
 
-        cerrar = Button(text="Close (X)", size_hint_y=None, height=30,background_color=(1, 0.5, 0.4, 1), color=(1, 1, 1, 1), bold=True)
+        cerrar = Button(text="Close (X)", size=(300, 50), size_hint_y=None, height=30, background_color=(1, 0.5, 0.4, 1), color=(1, 1, 1, 1), bold=True)
         contenedor1.add_widget(cerrar)
 
-        ventana = Popup(title="*** ERROR ***", content=contenedor1, size_hint=(0.9, 0.5))
+        ventana = Popup(title="PRECAUCIÓN !!", content=contenedor1, size_hint=(0.9, 0.5))
         cerrar.bind(on_press=ventana.dismiss)
         ventana.open()
 
         return ventana
+    
+    def ver_detalles(self, instance):
+        # Aquí creamos el popup que muestra los detalles
+        detalles_texto = self.obtener_detalles()
+
+        content = BoxLayout(orientation='vertical')
+        content.add_widget(Label(text=detalles_texto))
+        cerrar_button = Button(text='Cerrar', size_hint_y=None, height=50)
+        content.add_widget(cerrar_button)
+
+        popup = Popup(title='Detalles de la Liquidación', content=content, size_hint=(0.8, 0.8))
+        cerrar_button.bind(on_press=popup.dismiss)
+        popup.open()
+
+    def obtener_detalles(self, instance):
+        if self.detalles:  # Verifica si hay detalles
+            details_text = "\n".join(f"{key}: {value:.1f}" for key, value in self.detalles.items() if value > 0)
+            
+            # Crea el contenido del Popup
+            content = BoxLayout(orientation='vertical')
+            details_label = Label(text=details_text)
+            close_button = Button(text="Close (X)", size=(300, 50), size_hint_y=None, height=30, background_color=(1, 0.5, 0.4, 1), color=(1, 1, 1, 1), bold=True)
+            close_button.bind(on_press=lambda x: popup.dismiss())  # Cierra el Popup al hacer clic
+
+            # Agrega el label y el botón al contenido
+            content.add_widget(details_label)
+            content.add_widget(close_button)
+
+            # Crea y abre el Popup
+            popup = Popup(title='Detalles de la Liquidación', content=content, size_hint=(0.9, 0.9))
+            popup.open()
+        else:
+            self.mostrar_error("Primero debes llenar los espacios con tus datos y calcular la nómina para así poder ver los detalles.")
+    
+    def clear_labels(self, instance):
+        self.result_label.text = ""
+        self.salary_input.text = ""
+        self.weeks_input.text = ""
+        self.holiday_time_input.text = ""
+        self.overtime_day_input.text = ""
+        self.overtime_night_input.text = ""
+        self.overtime_holiday_input.text = ""
+        self.leave_days_input.text = ""
+        self.sick_day_input.text = ""
+
 
 
 if __name__ == '__main__':
