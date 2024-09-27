@@ -40,12 +40,16 @@ class Liquidacion():
         PERCENTAGE_TO_DEDUCT_FOR_WITHHOLDING = 0.05
         SALARY_TO_DEDUCT_FOR_WITHHOLDING = 4300000
         PERCENTAGE_TO_DEDUCT_FOR_DISABILITY = 0.333
+
+        if self.variables['monthly_salary'][0] < 2000:
+            raise Validations.ZeroSalary("VALOR INVÁLIDO: Asegurese de que el valor en salario sea su salario mensual (número mayor de cero '0').")
         
         if self.variables['weeks_worked'][0]== 0:
-            raise Validations.ZeroWeeksWorked("INVALID VALUE: Weeks worked must be a number greater than or equal to 1.")
+            raise Validations.ZeroWeeksWorked("VALOR INVÁLIDO:Las semanas trabajadas deben ser un número mayor o igual a 1.")
+        
         
         if self.variables['time_worked_on_holidays'][0] > DAILY_WORKING_HOURS:
-            raise Validations.MoreThan8HoursWorkedOnHoliday("INVALID VALUE: Time worked on holidays cannot be more than 8 hours.")
+            raise Validations.MoreThan8HoursWorkedOnHoliday("VALOR INVÁLIDO: El timepo festivo laborado no piede ser mayor a 8 horas.")
         
         days_worked = self.variables['weeks_worked'][0] * TOTAL_WORK_DAYS_PER_WEEK  # Convert weeks to days worked
 
@@ -76,4 +80,20 @@ class Liquidacion():
         total_settlement = total_income - (health_deduction + pension_deduction + solidarity_fund_deduction + disability_deduction + 
                                         leave_payment + withholding_tax)
         
-        return round(total_settlement, 2)
+        detalles = {
+            'Auxilio de transporte':transport_allowance,
+            'Monto por laborar festivos': earnings_for_holidays,
+            'Monto por extras diurnos': earnings_for_overtime_day,
+            'Monto por extras nocturnos': earnings_for_overtime_night,
+            'Monto por extras en festivo': earnings_for_overtime_holidays,
+            'Total de ingresos': total_income,
+            'Resta por salud': health_deduction,
+            'Resta por pension': pension_deduction,
+            'Resta de fondo_solidario': solidarity_fund_deduction,
+            'Pagos por licencia': leave_payment,
+            'Retención de fuente': withholding_tax,
+            'Deduccion por incapacidad': disability_deduction
+        }
+    
+        return (round(total_settlement, 2),detalles)
+
