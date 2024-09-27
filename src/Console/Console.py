@@ -1,9 +1,11 @@
 import sys
 sys.path.append("src")
 from LiquidacionNomina import Liquida_nomina
-6
+
+detalles = {}
 def validate_empty(value):
     return value if value else "0"
+
 
 print("<<< PROGRAM RUNNING >>>")
 print("::::::::::::::::::::::::::::::::")
@@ -24,8 +26,8 @@ try:
                                   overtime_day_hours=overtime_day_hours, overtime_night_hours=overtime_night_hours, 
                                 overtime_holiday_hours=overtime_holiday_hours, leave_days=leave_days, sick_days=sick_days
     )
-    result= liquidacion.CalcularLiquidacion()
-    print(f"The total amount of your settlement is: {result}")
+    total_payment, detalles= liquidacion.CalcularLiquidacion()
+    print(f"The total amount of your settlement is: {total_payment}")
 except Exception as up_error:
     print("*** ERROR ***")
     print(str(up_error))
