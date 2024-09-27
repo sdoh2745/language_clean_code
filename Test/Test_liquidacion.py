@@ -9,64 +9,75 @@ class LiquidationTest(unittest.TestCase):
 
     # Normal tests (expected cases)
     def test_basic_liquidation(self):
-        result= Liquida_nomina.Liquidacion(monthly_salary=1500000, weeks_worked=24)
-        self.assertEqual(result.CalcularLiquidacion(), 6773040.0)
+        liquidacion= Liquida_nomina.Liquidacion(monthly_salary=1500000, weeks_worked=24)
+        result, detalles= liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 6773040.0)
 
     def test_complete_liquidation(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=1300000, weeks_worked=7, overtime_day_hours=13,
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=1300000, weeks_worked=7, overtime_day_hours=13,
                                                      overtime_night_hours=3, time_worked_on_holidays=8, leave_days=7, sick_days=3)
-        self.assertEqual(result.CalcularLiquidacion(), 1653725.0) #este está bien(medio bien), falta controlar la excepción de las 8 horas laborales para días festivos
-
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 1653725.0) 
+        
     def test_liquidation_with_overtime(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=2200000, weeks_worked=26, 
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=2200000, weeks_worked=26, 
                                                      overtime_day_hours=10, overtime_night_hours=5)
-        self.assertEqual(result.CalcularLiquidacion(), 10853048.33)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 10853048.33)
     
     def test_normal_liquidation(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=3000000, weeks_worked=4, time_worked_on_holidays=8, 
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=3000000, weeks_worked=4, time_worked_on_holidays=8, 
                                                      overtime_day_hours=5, overtime_night_hours=3, overtime_holiday_hours=2, 
                                                      sick_days=5)
-        self.assertEqual(result.CalcularLiquidacion(), 2380750.00) 
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 2380750.00) 
         
     def test_regular_liquidation(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=2000000, weeks_worked=14, time_worked_on_holidays=5, 
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=2000000, weeks_worked=14, time_worked_on_holidays=5, 
                                                      overtime_day_hours=2, overtime_night_hours=1, overtime_holiday_hours=1, 
                                                      sick_days=3)
-        self.assertEqual(result.CalcularLiquidacion(), 5349440.0)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 5349440.0)
 
     def test_natural_liquidation(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=2600000, weeks_worked=4, time_worked_on_holidays=8, 
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=2600000, weeks_worked=4, time_worked_on_holidays=8, 
                                                      overtime_day_hours=4, overtime_night_hours=2, overtime_holiday_hours=1)
-        self.assertEqual(result.CalcularLiquidacion(), 2306823.33)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 2306823.33)
 
     # Extraordinary tests (boundary or unusual cases)
     def test_liquidation_with_sick_days(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=4000000, weeks_worked=20, sick_days=15)
-        self.assertEqual(result.CalcularLiquidacion(), 14054000.0)
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=4000000, weeks_worked=20, sick_days=15)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 14054000.0)
 
     def test_liquidation_with_retention(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=7000000, weeks_worked=8, sick_days=1)
-        self.assertEqual(result.CalcularLiquidacion(), 9554300.0)
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=7000000, weeks_worked=8, sick_days=1)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 9554300.0)
 
     def test_liquidation_without_transport(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=3000000, weeks_worked=10)
-        self.assertEqual(result.CalcularLiquidacion(), 5520000.00)
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=3000000, weeks_worked=10)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 5520000.00)
     
     def test_with_leave_days(self):
         monthly_salary = 1000000
         weeks_worked = 3
         leave_days = 6
-        result = Liquida_nomina.Liquidacion(monthly_salary, weeks_worked, leave_days)
-        self.assertEqual(result.CalcularLiquidacion(), 741290.0)
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary, weeks_worked, leave_days)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 741290.0)
 
     def test_low_salary_liquidation(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=900000, weeks_worked=2)
-        self.assertEqual(result.CalcularLiquidacion(), 480240.0)  # Low salary
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=900000, weeks_worked=2)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 480240.0)
     
     def test_one_leave_day(self):
-        result = Liquida_nomina.Liquidacion(monthly_salary=1900000, weeks_worked=12, 
-                                                     leave_days=1)
-        self.assertEqual(result.CalcularLiquidacion(), 4280906.67)
+        liquidacion = Liquida_nomina.Liquidacion(monthly_salary=1900000, weeks_worked=12, leave_days=1)
+        result, detalles = liquidacion.CalcularLiquidacion()
+        self.assertEqual(result, 4280906.67)
 
     # Error tests (error handling)
     def test_negative_salary(self):
@@ -74,7 +85,7 @@ class LiquidationTest(unittest.TestCase):
         weeks_worked = 20
         with self.assertRaises(Validations.NegativeValue):
             liquidacion = Liquida_nomina.Liquidacion(monthly_salary, weeks_worked)
-            liquidacion.CalcularLiquidacion()  # Asegúrate de llamar a esta línea
+            liquidacion.CalcularLiquidacion()
 
     def test_weeks_worked_zero(self):
         monthly_salary = 2000000
