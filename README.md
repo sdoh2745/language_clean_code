@@ -19,7 +19,7 @@ Para correr el programa por fuera del entorno de desarrollo :
 2. A continuación puedes ejecutar la consola para comprobar el funcionamiento, esto mediante las siguinetes lineas: <br>
    ```bash
    src\Console\Console.py
-   python src\Console\Console.py
+   python src\Console\Console.py`
    ```
 3. Tambien puedes ejecutar el script principal donde se encuentra la interfaz, la cual es mas amigable con el usuario: <br>
    ```bash
